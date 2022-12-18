@@ -3,7 +3,9 @@
 
 require "sorbet-runtime"
 
-require_relative "twirbet/version"
+require "twirbet/service"
+require "twirbet/client"
+require "twirbet/version"
 
 module Twirbet
 end

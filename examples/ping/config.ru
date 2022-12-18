@@ -4,6 +4,6 @@
 require_relative "service"
 
 handler = PingHandler.new
-service = PingService.new(handler)
+service = Ping::PingService::Service.new(handler)
 
 run service

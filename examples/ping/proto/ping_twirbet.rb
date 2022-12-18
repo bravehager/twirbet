@@ -2,7 +2,7 @@ require_relative "ping_pb"
 
 module Ping
   module PingService
-    class Handler
+    module Handler
       extend T::Sig
       extend T::Helpers
 
