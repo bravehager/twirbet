@@ -11,6 +11,15 @@ module Twirbet
 
     abstract!
 
+    sig { returns(T::Hash[String, String]) }
+    attr_reader :metadata
+
+    sig { params(message: String, metadata: T::Hash[String, String]).void }
+    def initialize(message, metadata = {})
+      super(message)
+      @metadata = metadata
+    end
+
     sig { abstract.returns(String) }
     def code
     end
@@ -31,7 +40,7 @@ module Twirbet
 
     sig(:final) { returns(T::Hash[String, String]) }
     def to_hash
-      { "code" => code, "msg" => message }
+      { "code" => code, "msg" => message, "meta" => metadata }
     end
   end
 
