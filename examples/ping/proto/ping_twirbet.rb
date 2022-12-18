@@ -1,3 +1,5 @@
+# typed: true
+
 require "twirbet"
 require_relative "ping_pb"
 

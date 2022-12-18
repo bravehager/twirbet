@@ -1,10 +1,8 @@
-# typed: false
-# frozen_string_literal: true
+# typed: true
 
-require "twirbet"
-require_relative "proto/ping_twirbet"
+require_relative "environment"
 
-class PingHandler
+class Application
   extend T::Sig
   include Ping::PingService::Handler
 

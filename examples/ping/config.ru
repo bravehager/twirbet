@@ -1,9 +1,8 @@
-# typed: false
+# typed: true
 # frozen_string_literal: true
 
-require_relative "service"
+require_relative "config/application"
 
-handler = PingHandler.new
-service = Ping::PingService::Service.new(handler)
+application = Application.new
 
-run service
+T.unsafe(self).run Ping::PingService::Service.new(application)
