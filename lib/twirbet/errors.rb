@@ -35,6 +35,20 @@ module Twirbet
     end
   end
 
+  class CanceledError < BaseError
+    extend T::Sig
+
+    sig { override.returns(String) }
+    def code
+      "canceled"
+    end
+
+    sig { override.returns(Integer) }
+    def status
+      400
+    end
+  end
+
   class UnknownError < BaseError
     extend T::Sig
 
@@ -45,7 +59,7 @@ module Twirbet
 
     sig { override.returns(Integer) }
     def status
-      500
+      400
     end
   end
 
@@ -77,6 +91,34 @@ module Twirbet
     end
   end
 
+  class DeadlineExceededError < BaseError
+    extend T::Sig
+
+    sig { override.returns(String) }
+    def code
+      "deadline_exceeded"
+    end
+
+    sig { override.returns(Integer) }
+    def status
+      400
+    end
+  end
+
+  class NotFoundError < BaseError
+    extend T::Sig
+
+    sig { override.returns(String) }
+    def code
+      "not_found"
+    end
+
+    sig { override.returns(Integer) }
+    def status
+      404
+    end
+  end
+
   class BadRouteError < BaseError
     extend T::Sig
 
@@ -88,6 +130,118 @@ module Twirbet
     sig { override.returns(Integer) }
     def status
       404
+    end
+  end
+
+  class AlreadyExistsError < BaseError
+    extend T::Sig
+
+    sig { override.returns(String) }
+    def code
+      "already_exists"
+    end
+
+    sig { override.returns(Integer) }
+    def status
+      409
+    end
+  end
+
+  class PermissionDeniedError < BaseError
+    extend T::Sig
+
+    sig { override.returns(String) }
+    def code
+      "permission_denied"
+    end
+
+    sig { override.returns(Integer) }
+    def status
+      403
+    end
+  end
+
+  class UnauthenticatedError < BaseError
+    extend T::Sig
+
+    sig { override.returns(String) }
+    def code
+      "unauthenticated"
+    end
+
+    sig { override.returns(Integer) }
+    def status
+      401
+    end
+  end
+
+  class ResourceExhaustedError < BaseError
+    extend T::Sig
+
+    sig { override.returns(String) }
+    def code
+      "resource_exhausted"
+    end
+
+    sig { override.returns(Integer) }
+    def status
+      429
+    end
+  end
+
+  class FailedPreconditionError < BaseError
+    extend T::Sig
+
+    sig { override.returns(String) }
+    def code
+      "failed_precondition"
+    end
+
+    sig { override.returns(Integer) }
+    def status
+      400
+    end
+  end
+
+  class AbortedError < BaseError
+    extend T::Sig
+
+    sig { override.returns(String) }
+    def code
+      "aborted"
+    end
+
+    sig { override.returns(Integer) }
+    def status
+      409
+    end
+  end
+
+  class OutOfRangeError < BaseError
+    extend T::Sig
+
+    sig { override.returns(String) }
+    def code
+      "out_of_range"
+    end
+
+    sig { override.returns(Integer) }
+    def status
+      400
+    end
+  end
+
+  class UnimplementedError < BaseError
+    extend T::Sig
+
+    sig { override.returns(String) }
+    def code
+      "unimplemented"
+    end
+
+    sig { override.returns(Integer) }
+    def status
+      501
     end
   end
 
@@ -105,6 +259,34 @@ module Twirbet
     end
   end
 
+  class UnavailableError < BaseError
+    extend T::Sig
+
+    sig { override.returns(String) }
+    def code
+      "unavailable"
+    end
+
+    sig { override.returns(Integer) }
+    def status
+      503
+    end
+  end
+
+  class DataLossError < BaseError
+    extend T::Sig
+
+    sig { override.returns(String) }
+    def code
+      "data_loss"
+    end
+
+    sig { override.returns(Integer) }
+    def status
+      500
+    end
+  end
+
   module Error
     extend T::Sig
 
@@ -112,8 +294,20 @@ module Twirbet
       "unknown" => UnknownError,
       "invalid_argument" => InvalidArgumentError,
       "malformed" => MalformedError,
+      "deadline_exceeded" => DeadlineExceededError,
+      "not_found" => NotFoundError,
       "bad_route" => BadRouteError,
+      "already_exists" => AlreadyExistsError,
+      "permission_denied" => PermissionDeniedError,
+      "unauthenticated" => UnauthenticatedError,
+      "resource_exhausted" => ResourceExhaustedError,
+      "failed_precondition" => FailedPreconditionError,
+      "aborted" => AbortedError,
+      "out_of_range" => OutOfRangeError,
+      "unimplemented" => UnimplementedError,
       "internal" => InternalError,
+      "unavailable" => UnavailableError,
+      "data_loss" => DataLossError,
     }.freeze, T::Hash[String, T.class_of(BaseError)])
 
     class << self
