@@ -1,3 +1,4 @@
+require "twirbet"
 require_relative "ping_pb"
 
 module Ping
