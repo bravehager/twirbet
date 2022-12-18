@@ -1,3 +1,7 @@
+# typed: true
+# frozen_string_literal: true
+
+require "twirbet"
 require_relative "ping_pb"
 
 module Ping

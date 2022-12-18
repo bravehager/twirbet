@@ -5,7 +5,10 @@ require "twirbet/method"
 
 module Twirbet
   module DSL
+    extend T::Sig
     extend T::Helpers
+
+    requires_ancestor { Kernel }
 
     module ClassMethods
       extend T::Sig
@@ -57,5 +60,25 @@ module Twirbet
     end
 
     mixes_in_class_methods(ClassMethods)
+
+    sig { returns(T.nilable(String)) }
+    def package_name
+      self.class.package_name
+    end
+
+    sig { returns(String) }
+    def service_name
+      self.class.service_name
+    end
+
+    sig { returns(String) }
+    def full_name
+      self.class.full_name
+    end
+
+    sig { params(name: String).returns(T.nilable(Method)) }
+    def rpc(name)
+      self.class.rpcs[name]
+    end
   end
 end

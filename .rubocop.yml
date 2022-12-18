@@ -10,3 +10,11 @@ AllCops:
   NewCops: enable
   Exclude:
     - examples/**/*
+
+Sorbet/ValidSigil:
+  Exclude:
+    - ./**/*_pb.rb
+
+Sorbet/FalseSigil:
+  Exclude:
+    - ./**/*_pb.rb
