@@ -1,11 +1,8 @@
+# typed: false
 # frozen_string_literal: true
 
-RSpec.describe Twirbet do
+RSpec.describe(Twirbet) do
   it "has a version number" do
-    expect(Twirbet::VERSION).not_to be nil
-  end
-
-  it "does something useful" do
-    expect(false).to eq(true)
+    expect(Twirbet::VERSION).not_to(be_nil)
   end
 end
