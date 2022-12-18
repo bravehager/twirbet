@@ -11,6 +11,11 @@ module Twirbet
         content_type == "application/protobuf" || content_type == "application/json"
       end
 
+      sig { params(request: T.untyped, klass: Class).returns(T.untyped) }
+      def encode_request(request, klass)
+        T.unsafe(klass).encode(request)
+      end
+
       sig { params(request: Rack::Request).returns(T.untyped) }
       def decode_request(request)
         method = request.env["twirp.method"]
