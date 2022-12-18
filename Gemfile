@@ -18,3 +18,9 @@ gem "rubocop-rspec", "~> 2.16"
 gem "rubocop-shopify", "~> 2.10"
 
 gem "rubocop-sorbet", "~> 0.6.11"
+
+gem "sorbet", "~> 0.5.10595"
+
+gem "spoom", "~> 1.1"
+
+gem "tapioca", "~> 0.10.3"
