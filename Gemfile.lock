@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    twirbet (0.1.0)
+    twirbet (0.1.1)
       google-protobuf (~> 3.21)
       rack (~> 3.0)
       sorbet-runtime (~> 0.5.10595)
@@ -16,7 +16,6 @@ GEM
       rexml
     diff-lcs (1.5.0)
     google-protobuf (3.21.12)
-    google-protobuf (3.21.12-x86_64-linux)
     hashdiff (1.0.1)
     json (2.6.3)
     netrc (0.11.0)
