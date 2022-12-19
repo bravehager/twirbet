@@ -16,6 +16,7 @@ GEM
       rexml
     diff-lcs (1.5.0)
     google-protobuf (3.21.12)
+    google-protobuf (3.21.12-x86_64-linux)
     hashdiff (1.0.1)
     json (2.6.3)
     netrc (0.11.0)
@@ -71,6 +72,7 @@ GEM
       sorbet-static (= 0.5.10595)
     sorbet-runtime (0.5.10595)
     sorbet-static (0.5.10595-universal-darwin-21)
+    sorbet-static (0.5.10595-x86_64-linux)
     sorbet-static-and-runtime (0.5.10595)
       sorbet (= 0.5.10595)
       sorbet-runtime (= 0.5.10595)
@@ -105,6 +107,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-21
+  x86_64-linux
 
 DEPENDENCIES
   rake (~> 13.0)
