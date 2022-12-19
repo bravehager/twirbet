@@ -10,3 +10,8 @@ require "rubocop/rake_task"
 RuboCop::RakeTask.new
 
 task default: [:spec, :rubocop]
+
+desc "Run client compatibility tests"
+task clientcompat: ["install:local"] do
+  sh "clientcompat -client=examples/clientcompat/client"
+end

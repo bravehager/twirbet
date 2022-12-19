@@ -1,0 +1,28 @@
+#! /usr/bin/env ruby
+
+require_relative "clientcompat_twirbet"
+
+message = Twirp::Clientcompat::ClientCompatMessage.decode(STDIN.read)
+
+client = Twirp::Clientcompat::CompatService::Client.new(message.service_address)
+
+case message.method_name
+when :NOOP
+  request = Google::Protobuf.decode(Twirp::Clientcompat::Empty, message.request)
+  begin
+    response = client.noop_method(request)
+    $stdout.write(response.to_proto)
+  rescue Twirbet::BaseError => e
+    $stderr.write(e.code)
+  end
+when :METHOD
+  request = Google::Protobuf.decode(Twirp::Clientcompat::Req, message.request)
+  begin
+    response = client.real_method(request)
+    $stdout.write(response.to_proto)
+  rescue Twirbet::BaseError => e
+    $stderr.write(e.code)
+  end
+else
+  raise "Unknown method: #{message.method_name}"
+end

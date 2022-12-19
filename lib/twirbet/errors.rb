@@ -3,6 +3,7 @@
 
 require "json"
 require "rack"
+require "twirbet/transport"
 
 module Twirbet
   class BaseError < StandardError
@@ -300,6 +301,7 @@ module Twirbet
     extend T::Sig
 
     CODE_MAP = T.let({
+      "canceled" => CanceledError,
       "unknown" => UnknownError,
       "invalid_argument" => InvalidArgumentError,
       "malformed" => MalformedError,
@@ -321,6 +323,27 @@ module Twirbet
 
     class << self
       extend T::Sig
+
+      sig { params(response: Transport::Response).returns(BaseError) }
+      def from_response(response)
+        from_json(response.body)
+      rescue JSON::ParserError
+        from_intermidate(response.status, "Response is not JSON.", response.body)
+      end
+
+      sig { params(status: Integer, reason: String, body: String).returns(BaseError) }
+      def from_intermidate(status, reason, body)
+        code = case status
+        when 400 then "internal"
+        when 401 then "unauthenticated"
+        when 403 then "permission_denied"
+        when 404 then "bad_route"
+        when 429, 502, 503, 504 then "unavailable"
+        else "unknown"
+        end
+
+        build(code, code)
+      end
 
       sig { params(exception: Exception).returns(BaseError) }
       def from_exception(exception)

@@ -14,12 +14,16 @@ module Twirbet
     sig { returns(String) }
     attr_reader :base_url
 
+    sig { returns(String) }
+    attr_reader :prefix
+
     sig { returns(Transport) }
     attr_reader :transport
 
-    sig { params(base_url: String, transport: Transport).void }
-    def initialize(base_url, transport: Transports::NetHTTPTransport.new)
+    sig { params(base_url: String, prefix: String, transport: Transport).void }
+    def initialize(base_url, prefix: "/twirp", transport: Transports::NetHTTPTransport.new)
       @base_url = base_url
+      @prefix = prefix
       @transport = transport
     end
 
@@ -28,11 +32,16 @@ module Twirbet
       method = rpc(method_name)
       raise ArgumentError, "Unknown method: #{method_name}" unless method
 
-      url = "#{base_url}/#{full_name}/#{method_name}"
+      url = "#{base_url}#{prefix}/#{full_name}/#{method_name}"
       body = Encoding.encode_request(request, method.request)
       headers = { "Content-Type" => "application/protobuf" }
 
       response = transport.call(Transport::Request.new(url, body, headers))
+
+      if response.status != 200
+        e = Twirbet::Error.from_response(response)
+        raise e
+      end
 
       Encoding.decode(response.body, method.response, "application/protobuf")
     end
