@@ -12,8 +12,8 @@ module Twirbet
 
       sig { override.params(request: Transport::Request).returns(Transport::Response) }
       def call(request)
-        response = Net::HTTP.post(URI(request.url), request.body, request.headers)
-        Transport::Response.new(response.code.to_i, response.body)
+        response = T.cast(Net::HTTP.post(URI(request.url), request.body, request.headers), Net::HTTPResponse)
+        Transport::Response.new(response.code.to_i, response.to_hash, response.body)
       end
     end
   end

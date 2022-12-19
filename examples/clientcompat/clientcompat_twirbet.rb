@@ -8,7 +8,7 @@ module Twirp
         extend T::Sig
         extend T::Helpers
 
-        abstract!
+        interface!
 
         sig { abstract.params(request: Req).returns(Resp) }
         def real_method(request); end

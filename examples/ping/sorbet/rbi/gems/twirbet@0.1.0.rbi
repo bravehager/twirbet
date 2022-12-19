@@ -7,85 +7,85 @@
 # source://twirbet//lib/twirbet/method.rb#4
 module Twirbet; end
 
-# source://twirbet//lib/twirbet/errors.rb#215
+# source://twirbet//lib/twirbet/errors.rb#216
 class Twirbet::AbortedError < ::Twirbet::BaseError
-  # source://twirbet//lib/twirbet/errors.rb#219
+  # source://twirbet//lib/twirbet/errors.rb#220
   sig { override.returns(::String) }
   def code; end
 
-  # source://twirbet//lib/twirbet/errors.rb#224
+  # source://twirbet//lib/twirbet/errors.rb#225
   sig { override.returns(::Integer) }
   def status; end
 end
 
-# source://twirbet//lib/twirbet/errors.rb#145
+# source://twirbet//lib/twirbet/errors.rb#146
 class Twirbet::AlreadyExistsError < ::Twirbet::BaseError
-  # source://twirbet//lib/twirbet/errors.rb#149
+  # source://twirbet//lib/twirbet/errors.rb#150
   sig { override.returns(::String) }
   def code; end
 
-  # source://twirbet//lib/twirbet/errors.rb#154
+  # source://twirbet//lib/twirbet/errors.rb#155
   sig { override.returns(::Integer) }
   def status; end
 end
 
-# source://twirbet//lib/twirbet/errors.rb#131
+# source://twirbet//lib/twirbet/errors.rb#132
 class Twirbet::BadRouteError < ::Twirbet::BaseError
-  # source://twirbet//lib/twirbet/errors.rb#135
+  # source://twirbet//lib/twirbet/errors.rb#136
   sig { override.returns(::String) }
   def code; end
 
-  # source://twirbet//lib/twirbet/errors.rb#140
+  # source://twirbet//lib/twirbet/errors.rb#141
   sig { override.returns(::Integer) }
   def status; end
 end
 
 # @abstract It cannot be directly instantiated. Subclasses must implement the `abstract` methods below.
 #
-# source://twirbet//lib/twirbet/errors.rb#8
+# source://twirbet//lib/twirbet/errors.rb#9
 class Twirbet::BaseError < ::StandardError
   abstract!
 
-  # source://twirbet//lib/twirbet/errors.rb#18
+  # source://twirbet//lib/twirbet/errors.rb#19
   sig { params(message: ::String, metadata: T::Hash[::String, ::String]).void }
   def initialize(message, metadata = T.unsafe(nil)); end
 
   # @abstract
   #
-  # source://twirbet//lib/twirbet/errors.rb#24
+  # source://twirbet//lib/twirbet/errors.rb#25
   sig { abstract.returns(::String) }
   def code; end
 
-  # source://twirbet//lib/twirbet/errors.rb#15
+  # source://twirbet//lib/twirbet/errors.rb#16
   sig { returns(T::Hash[::String, ::String]) }
   def metadata; end
 
   # @abstract
   #
-  # source://twirbet//lib/twirbet/errors.rb#28
+  # source://twirbet//lib/twirbet/errors.rb#29
   sig { abstract.returns(::Integer) }
   def status; end
 
-  # source://twirbet//lib/twirbet/errors.rb#42
+  # source://twirbet//lib/twirbet/errors.rb#43
   sig(:final) { returns(T::Hash[::String, ::String]) }
   def to_hash; end
 
-  # source://twirbet//lib/twirbet/errors.rb#37
+  # source://twirbet//lib/twirbet/errors.rb#38
   sig(:final) { returns(::String) }
   def to_json; end
 
-  # source://twirbet//lib/twirbet/errors.rb#32
+  # source://twirbet//lib/twirbet/errors.rb#33
   sig(:final) { returns(::Rack::Response) }
   def to_rack_response; end
 end
 
-# source://twirbet//lib/twirbet/errors.rb#47
+# source://twirbet//lib/twirbet/errors.rb#48
 class Twirbet::CanceledError < ::Twirbet::BaseError
-  # source://twirbet//lib/twirbet/errors.rb#51
+  # source://twirbet//lib/twirbet/errors.rb#52
   sig { override.returns(::String) }
   def code; end
 
-  # source://twirbet//lib/twirbet/errors.rb#56
+  # source://twirbet//lib/twirbet/errors.rb#57
   sig { override.returns(::Integer) }
   def status; end
 end
@@ -95,9 +95,9 @@ class Twirbet::Client
   include ::Twirbet::DSL
   extend ::Twirbet::DSL::ClassMethods
 
-  # source://twirbet//lib/twirbet/client.rb#21
-  sig { params(base_url: ::String, transport: ::Twirbet::Transport).void }
-  def initialize(base_url, transport: T.unsafe(nil)); end
+  # source://twirbet//lib/twirbet/client.rb#24
+  sig { params(base_url: ::String, prefix: ::String, transport: ::Twirbet::Transport).void }
+  def initialize(base_url, prefix: T.unsafe(nil), transport: T.unsafe(nil)); end
 
   # source://twirbet//lib/twirbet/client.rb#15
   sig { returns(::String) }
@@ -105,11 +105,15 @@ class Twirbet::Client
 
   # @raise [ArgumentError]
   #
-  # source://twirbet//lib/twirbet/client.rb#27
-  sig { params(method_name: ::String, request: T.untyped).returns(T.untyped) }
-  def call(method_name, request); end
+  # source://twirbet//lib/twirbet/client.rb#31
+  sig { params(method_name: ::String, request: T.untyped, headers: T::Hash[::String, ::String]).returns(T.untyped) }
+  def call(method_name, request, headers = T.unsafe(nil)); end
 
   # source://twirbet//lib/twirbet/client.rb#18
+  sig { returns(::String) }
+  def prefix; end
+
+  # source://twirbet//lib/twirbet/client.rb#21
   sig { returns(::Twirbet::Transport) }
   def transport; end
 end
@@ -170,24 +174,24 @@ module Twirbet::DSL::ClassMethods
   def service_name; end
 end
 
-# source://twirbet//lib/twirbet/errors.rb#285
+# source://twirbet//lib/twirbet/errors.rb#286
 class Twirbet::DataLossError < ::Twirbet::BaseError
-  # source://twirbet//lib/twirbet/errors.rb#289
+  # source://twirbet//lib/twirbet/errors.rb#290
   sig { override.returns(::String) }
   def code; end
 
-  # source://twirbet//lib/twirbet/errors.rb#294
+  # source://twirbet//lib/twirbet/errors.rb#295
   sig { override.returns(::Integer) }
   def status; end
 end
 
-# source://twirbet//lib/twirbet/errors.rb#103
+# source://twirbet//lib/twirbet/errors.rb#104
 class Twirbet::DeadlineExceededError < ::Twirbet::BaseError
-  # source://twirbet//lib/twirbet/errors.rb#107
+  # source://twirbet//lib/twirbet/errors.rb#108
   sig { override.returns(::String) }
   def code; end
 
-  # source://twirbet//lib/twirbet/errors.rb#112
+  # source://twirbet//lib/twirbet/errors.rb#113
   sig { override.returns(::Integer) }
   def status; end
 end
@@ -217,70 +221,78 @@ module Twirbet::Encoding
   end
 end
 
-# source://twirbet//lib/twirbet/errors.rb#299
+# source://twirbet//lib/twirbet/errors.rb#300
 module Twirbet::Error
   class << self
-    # source://twirbet//lib/twirbet/errors.rb#347
+    # source://twirbet//lib/twirbet/errors.rb#370
     sig { params(code: ::String, message: ::String).returns(::Twirbet::BaseError) }
     def build(code, message); end
 
-    # source://twirbet//lib/twirbet/errors.rb#326
+    # source://twirbet//lib/twirbet/errors.rb#349
     sig { params(exception: ::Exception).returns(::Twirbet::BaseError) }
     def from_exception(exception); end
 
-    # source://twirbet//lib/twirbet/errors.rb#342
+    # source://twirbet//lib/twirbet/errors.rb#365
     sig { params(hash: T::Hash[::String, ::String]).returns(::Twirbet::BaseError) }
     def from_hash(hash); end
 
-    # source://twirbet//lib/twirbet/errors.rb#336
+    # source://twirbet//lib/twirbet/errors.rb#335
+    sig { params(status: ::Integer, reason: ::String, body: ::String).returns(::Twirbet::BaseError) }
+    def from_intermidate(status, reason, body); end
+
+    # source://twirbet//lib/twirbet/errors.rb#359
     sig { params(json: ::String).returns(::Twirbet::BaseError) }
     def from_json(json); end
+
+    # source://twirbet//lib/twirbet/errors.rb#328
+    sig { params(response: ::Twirbet::Transport::Response).returns(::Twirbet::BaseError) }
+    def from_response(response); end
   end
 end
 
-# source://twirbet//lib/twirbet/errors.rb#302
+# source://twirbet//lib/twirbet/errors.rb#303
 Twirbet::Error::CODE_MAP = T.let(T.unsafe(nil), Hash)
 
-# source://twirbet//lib/twirbet/errors.rb#201
+# source://twirbet//lib/twirbet/errors.rb#202
 class Twirbet::FailedPreconditionError < ::Twirbet::BaseError
-  # source://twirbet//lib/twirbet/errors.rb#205
+  # source://twirbet//lib/twirbet/errors.rb#206
   sig { override.returns(::String) }
   def code; end
 
-  # source://twirbet//lib/twirbet/errors.rb#210
+  # source://twirbet//lib/twirbet/errors.rb#211
   sig { override.returns(::Integer) }
   def status; end
 end
 
-# source://twirbet//lib/twirbet/errors.rb#257
+# source://twirbet//lib/twirbet/errors.rb#258
 class Twirbet::InternalError < ::Twirbet::BaseError
-  # source://twirbet//lib/twirbet/errors.rb#261
+  # source://twirbet//lib/twirbet/errors.rb#262
   sig { override.returns(::String) }
   def code; end
 
-  # source://twirbet//lib/twirbet/errors.rb#266
+  # source://twirbet//lib/twirbet/errors.rb#267
   sig { override.returns(::Integer) }
   def status; end
 end
 
-# source://twirbet//lib/twirbet/errors.rb#75
+# source://twirbet//lib/twirbet/errors.rb#76
 class Twirbet::InvalidArgumentError < ::Twirbet::BaseError
-  # source://twirbet//lib/twirbet/errors.rb#79
+  # source://twirbet//lib/twirbet/errors.rb#80
   sig { override.returns(::String) }
   def code; end
 
-  # source://twirbet//lib/twirbet/errors.rb#84
+  # source://twirbet//lib/twirbet/errors.rb#85
   sig { override.returns(::Integer) }
   def status; end
 end
 
-# source://twirbet//lib/twirbet/errors.rb#89
+# source://twirbet//lib/twirbet/errors.rb#90
 class Twirbet::MalformedError < ::Twirbet::BaseError
-  # source://twirbet//lib/twirbet/errors.rb#93
+  # source://twirbet//lib/twirbet/errors.rb#94
   sig { override.returns(::String) }
   def code; end
 
-  # source://twirbet//lib/twirbet/errors.rb#98
+  # source://twirbet//lib/twirbet/errors.rb#99
   sig { override.returns(::Integer) }
   def status; end
 end
@@ -314,46 +326,46 @@ class Twirbet::Method
   def ruby_method; end
 end
 
-# source://twirbet//lib/twirbet/errors.rb#117
+# source://twirbet//lib/twirbet/errors.rb#118
 class Twirbet::NotFoundError < ::Twirbet::BaseError
-  # source://twirbet//lib/twirbet/errors.rb#121
+  # source://twirbet//lib/twirbet/errors.rb#122
   sig { override.returns(::String) }
   def code; end
 
-  # source://twirbet//lib/twirbet/errors.rb#126
+  # source://twirbet//lib/twirbet/errors.rb#127
   sig { override.returns(::Integer) }
   def status; end
 end
 
-# source://twirbet//lib/twirbet/errors.rb#229
+# source://twirbet//lib/twirbet/errors.rb#230
 class Twirbet::OutOfRangeError < ::Twirbet::BaseError
-  # source://twirbet//lib/twirbet/errors.rb#233
+  # source://twirbet//lib/twirbet/errors.rb#234
   sig { override.returns(::String) }
   def code; end
 
-  # source://twirbet//lib/twirbet/errors.rb#238
+  # source://twirbet//lib/twirbet/errors.rb#239
   sig { override.returns(::Integer) }
   def status; end
 end
 
-# source://twirbet//lib/twirbet/errors.rb#159
+# source://twirbet//lib/twirbet/errors.rb#160
 class Twirbet::PermissionDeniedError < ::Twirbet::BaseError
-  # source://twirbet//lib/twirbet/errors.rb#163
+  # source://twirbet//lib/twirbet/errors.rb#164
   sig { override.returns(::String) }
   def code; end
 
-  # source://twirbet//lib/twirbet/errors.rb#168
+  # source://twirbet//lib/twirbet/errors.rb#169
   sig { override.returns(::Integer) }
   def status; end
 end
 
-# source://twirbet//lib/twirbet/errors.rb#187
+# source://twirbet//lib/twirbet/errors.rb#188
 class Twirbet::ResourceExhaustedError < ::Twirbet::BaseError
-  # source://twirbet//lib/twirbet/errors.rb#191
+  # source://twirbet//lib/twirbet/errors.rb#192
   sig { override.returns(::String) }
   def code; end
 
-  # source://twirbet//lib/twirbet/errors.rb#196
+  # source://twirbet//lib/twirbet/errors.rb#197
   sig { override.returns(::Integer) }
   def status; end
 end
@@ -413,7 +425,7 @@ module Twirbet::Transport
 
   # @abstract
   #
-  # source://twirbet//lib/twirbet/transport.rb#48
+  # source://twirbet//lib/twirbet/transport.rb#52
   sig { abstract.params(request: ::Twirbet::Transport::Request).returns(::Twirbet::Transport::Response) }
   def call(request); end
 end
@@ -439,13 +451,17 @@ end
 
 # source://twirbet//lib/twirbet/transport.rb#29
 class Twirbet::Transport::Response
-  # source://twirbet//lib/twirbet/transport.rb#39
-  sig { params(status: ::Integer, body: ::String).void }
-  def initialize(status, body); end
+  # source://twirbet//lib/twirbet/transport.rb#42
+  sig { params(status: ::Integer, headers: T::Hash[::String, ::String], body: ::String).void }
+  def initialize(status, headers, body); end
 
-  # source://twirbet//lib/twirbet/transport.rb#36
+  # source://twirbet//lib/twirbet/transport.rb#39
   sig { returns(::String) }
   def body; end
+
+  # source://twirbet//lib/twirbet/transport.rb#36
+  sig { returns(T::Hash[::String, ::String]) }
+  def headers; end
 
   # source://twirbet//lib/twirbet/transport.rb#33
   sig { returns(::Integer) }
@@ -464,46 +480,46 @@ class Twirbet::Transports::NetHTTPTransport
   def call(request); end
 end
 
-# source://twirbet//lib/twirbet/errors.rb#173
+# source://twirbet//lib/twirbet/errors.rb#174
 class Twirbet::UnauthenticatedError < ::Twirbet::BaseError
-  # source://twirbet//lib/twirbet/errors.rb#177
+  # source://twirbet//lib/twirbet/errors.rb#178
   sig { override.returns(::String) }
   def code; end
 
-  # source://twirbet//lib/twirbet/errors.rb#182
+  # source://twirbet//lib/twirbet/errors.rb#183
   sig { override.returns(::Integer) }
   def status; end
 end
 
-# source://twirbet//lib/twirbet/errors.rb#271
+# source://twirbet//lib/twirbet/errors.rb#272
 class Twirbet::UnavailableError < ::Twirbet::BaseError
-  # source://twirbet//lib/twirbet/errors.rb#275
+  # source://twirbet//lib/twirbet/errors.rb#276
   sig { override.returns(::String) }
   def code; end
 
-  # source://twirbet//lib/twirbet/errors.rb#280
+  # source://twirbet//lib/twirbet/errors.rb#281
   sig { override.returns(::Integer) }
   def status; end
 end
 
-# source://twirbet//lib/twirbet/errors.rb#243
+# source://twirbet//lib/twirbet/errors.rb#244
 class Twirbet::UnimplementedError < ::Twirbet::BaseError
-  # source://twirbet//lib/twirbet/errors.rb#247
+  # source://twirbet//lib/twirbet/errors.rb#248
   sig { override.returns(::String) }
   def code; end
 
-  # source://twirbet//lib/twirbet/errors.rb#252
+  # source://twirbet//lib/twirbet/errors.rb#253
   sig { override.returns(::Integer) }
   def status; end
 end
 
-# source://twirbet//lib/twirbet/errors.rb#61
+# source://twirbet//lib/twirbet/errors.rb#62
 class Twirbet::UnknownError < ::Twirbet::BaseError
-  # source://twirbet//lib/twirbet/errors.rb#65
+  # source://twirbet//lib/twirbet/errors.rb#66
   sig { override.returns(::String) }
   def code; end
 
-  # source://twirbet//lib/twirbet/errors.rb#70
+  # source://twirbet//lib/twirbet/errors.rb#71
   sig { override.returns(::Integer) }
   def status; end
 end

@@ -1,6 +1,7 @@
 # typed: true
 # frozen_string_literal: true
 
+require "webmock/rspec"
 require "twirbet"
 
 RSpec.configure do |config|

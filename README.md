@@ -48,7 +48,7 @@ module PingService
     extend T::Sig
     extend T::Helpers
 
-    abstract!
+    interface!
 
     sig { abstract.params(request: PingRequest).returns(PingResponse) }
     def ping(request); end
@@ -75,9 +75,9 @@ module PingService
 
     rpc "Ping", PingRequest, PingResponse, ruby_method: :ping
 
-    sig { override.params(request: PingRequest).returns(PingResponse) }
-    def ping(request)
-      call("Ping", request)
+    sig { override.params(request: PingRequest, headers: T::Hash[String, String]).returns(PingResponse) }
+    def ping(request, headers = {})
+      call("Ping", request, headers)
     end
   end
 end

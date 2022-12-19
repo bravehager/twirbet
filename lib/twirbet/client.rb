@@ -27,21 +27,17 @@ module Twirbet
       @transport = transport
     end
 
-    sig { params(method_name: String, request: T.untyped).returns(T.untyped) }
-    def call(method_name, request)
+    sig { params(method_name: String, request: T.untyped, headers: T::Hash[String, String]).returns(T.untyped) }
+    def call(method_name, request, headers = {})
       method = rpc(method_name)
       raise ArgumentError, "Unknown method: #{method_name}" unless method
 
       url = "#{base_url}#{prefix}/#{full_name}/#{method_name}"
       body = Encoding.encode_request(request, method.request)
-      headers = { "Content-Type" => "application/protobuf" }
+      headers = headers.merge({ "Content-Type" => "application/protobuf" })
 
       response = transport.call(Transport::Request.new(url, body, headers))
-
-      if response.status != 200
-        e = Twirbet::Error.from_response(response)
-        raise e
-      end
+      raise Twirbet::Error.from_response(response) if response.status != 200
 
       Encoding.decode(response.body, method.response, "application/protobuf")
     end

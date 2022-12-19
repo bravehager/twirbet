@@ -2,7 +2,7 @@
 
 require_relative "config/environment"
 
-client = Ping::PingService::Client.new("http://localhost:8080")
+client = Ping::PingService::Client.new("http://localhost:9292")
 
 time_start = Time.now
 

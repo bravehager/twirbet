@@ -32,12 +32,16 @@ module Twirbet
       sig { returns(Integer) }
       attr_reader :status
 
+      sig { returns(T::Hash[String, String]) }
+      attr_reader :headers
+
       sig { returns(String) }
       attr_reader :body
 
-      sig { params(status: Integer, body: String).void }
-      def initialize(status, body)
+      sig { params(status: Integer, headers: T::Hash[String, String], body: String).void }
+      def initialize(status, headers, body)
         @status = status
+        @headers = headers
         @body = body
       end
     end

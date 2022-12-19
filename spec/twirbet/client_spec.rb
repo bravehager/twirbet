@@ -19,6 +19,13 @@ RSpec.describe(Twirbet::Client) do
       expect(response).to(eq(Ping::PingResponse.new(message: "")))
     end
 
+    it "sends headers" do
+      client.call("Ping", Ping::PingRequest.new(message: ""), "X-Test" => "test")
+      request = transport.requests.first
+
+      expect(request.headers).to(eq("Content-Type" => "application/protobuf", "X-Test" => "test"))
+    end
+
     context "when the rpc method is not defined" do
       it "raises an argument error" do
         expect { client.call("Pong", Ping::PingRequest.new) }.to(raise_error(ArgumentError, "Unknown method: Pong"))

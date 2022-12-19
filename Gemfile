@@ -24,3 +24,5 @@ gem "sorbet", "~> 0.5.10595"
 gem "spoom", "~> 1.1"
 
 gem "tapioca", "~> 0.10.3"
+
+gem "webmock", "~> 3.18"
